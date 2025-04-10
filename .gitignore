@@ -1,0 +1,11 @@
+pycache/
+.ipynb_checkpoints
+.env
+.venv
+.idea
+.vscode
+.vscode/*
+!.vscode/settings.json
+env/
+venv/
+.DS_Store
