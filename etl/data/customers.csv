@@ -1,0 +1,21 @@
+customer_id,gym_id,name,email,phone,birth_date,gender,join_date,status,package_id,trainer_id
+1,3,Amanda Anderson,benjamingibson@example.org,001-716-325-4685,1976-12-08,Female,2023-06-02,active,5,3
+2,2,Mary Campbell,kthomas@example.org,001-658-923-4627x694,1982-11-06,Female,2023-11-17,active,2,1
+3,3,Marisa Sanchez,katherine82@example.org,2002014310,2000-09-28,Male,2024-09-17,inactive,1,2
+4,1,Peter Nixon,nrodriguez@example.org,001-206-942-6854x43404,1973-03-31,Other,2023-07-17,active,5,6
+5,3,Angela Evans,stewartjason@example.org,211-901-6454x45384,1996-07-18,Female,2024-09-05,inactive,5,4
+6,2,Frank Franklin,ryan94@example.org,9065595519,1985-01-07,Male,2024-08-24,inactive,2,9
+7,2,Jason Contreras,josephnewton@example.net,001-281-679-3550x75086,1971-10-06,Female,2024-04-02,active,1,5
+8,1,Scott Perez,madison70@example.net,976-607-0040x199,1986-03-30,Other,2023-08-21,active,5,3
+9,3,Brandon Nunez,hinesbrandon@example.net,001-274-679-7631x95375,1965-08-12,Female,2023-05-04,active,6,3
+10,1,Kelly Mccoy,aglass@example.com,473.892.0868,1988-08-20,Male,2024-12-09,active,1,8
+11,2,Brittany Choi,hector26@example.org,001-578-386-3134x916,1966-09-27,Male,2025-01-11,inactive,6,8
+12,1,Wendy Wilkins,rhodeslance@example.net,001-329-716-8764x127,2006-05-30,Male,2023-10-18,active,3,1
+13,3,Amanda Ayala,qmartin@example.org,001-404-525-6739x53562,2000-12-02,Female,2024-02-23,active,3,5
+14,1,Jennifer Smith,kennethmiller@example.org,(944)504-5873x61141,2000-01-03,Male,2024-04-25,inactive,2,1
+15,2,Chloe Reyes,judy14@example.org,(850)873-1432x12427,1970-05-03,Other,2024-07-27,active,3,4
+16,2,Denise Pierce,bbaker@example.org,222.445.2448x8065,1987-06-29,Male,2023-11-09,inactive,1,4
+17,1,Michael Robbins,raymond68@example.com,898-735-9253x1788,1997-01-18,Other,2024-12-29,active,2,9
+18,3,Christopher Davis,esparzajohn@example.com,443-485-6189x8563,2002-06-17,Female,2025-04-16,inactive,5,2
+19,2,Richard Reyes,kcamacho@example.org,001-655-629-8066x84519,1999-03-01,Male,2024-03-17,inactive,4,4
+20,2,Daniel Thomas,ashley41@example.org,+1-289-514-1459x23417,1983-05-03,Female,2024-11-02,active,3,2
