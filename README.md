@@ -43,3 +43,11 @@ docker-compose up --build
 ## ER Diagram
 
 ![ER Diagram](docs/ERD.png)
+
+---
+
+After running docker-compose up --build, open your browser and go to:
+👉 http://localhost:8501
+Dummy login:
+email: admin@gym.com
+Password: 1234
