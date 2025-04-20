@@ -38,7 +38,7 @@ docker-compose up --build
 
 ## Project Structure
 
-PythonPackageProject/ # GitHub repo root ├── yourapplications/ # Contains all services │ ├── docker-compose.yaml # Docker Compose file │ ├── .env # Environment variables │ ├── service1/ # postgres │ │ ├── *.py │ │ └── Dockerfile │ ├── service2/ # pgadmin │ │ ├── *.py │ │ └── Dockerfile │ ├── service3/ # ETL-related │ │ ├── *.py │ │ └── requirements.txt │ └── Dockerfile # If needed ├── example.ipynb # Demo notebook ├── docs/ # Documentation │ └── ... ├── .gitignore ├── requirements_docs.txt # Doc requirements ├── README.md └── LICENSE
+![Project Structure](docs/Structure.png)
 
 ## ER Diagram
 
