@@ -13,8 +13,6 @@ env/
 venv/
 .DS_Store
 
-
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -50,6 +48,7 @@ ENV/
 .ENV/
 pip-log.txt
 pip-delete-this-directory.txt
+venv_docs/
 
 # Environments and secrets
 .env
@@ -127,3 +126,5 @@ cython_debug/
 # System
 Thumbs.db
 ehthumbs.db
+
+site/
