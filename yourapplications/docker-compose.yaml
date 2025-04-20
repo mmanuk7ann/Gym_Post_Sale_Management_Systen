@@ -1,1 +1,13 @@
 # This file is intentionally left blank
+version: '3.9'
+
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./frontend:/app
+    command: streamlit run app.py --server.port=8501 --server.enableCORS=false --server.address=0.0.0.0
