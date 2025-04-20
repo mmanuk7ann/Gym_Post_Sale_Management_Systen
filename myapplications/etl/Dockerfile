@@ -8,10 +8,9 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /etl
 
-# Copy requirements.txt file and install dependencies
 COPY requirements.txt . 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt.txt
+RUN pip install -r requirements.txt
 
 # Copy the rest of the application code
 COPY . .
