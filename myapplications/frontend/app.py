@@ -32,7 +32,8 @@ def show_login():
     if login_btn:
         if email == "admin@gym.com" and password == "1234":
             st.session_state.logged_in = True
-            st.experimental_rerun()  # This line makes it instantly move to the dashboard
+            st.rerun()
+  # This line makes it instantly move to the dashboard
         else:
             st.error("Email or Password is incorrect.")
 
@@ -226,19 +227,25 @@ def show_dashboard():
                     st.session_state.current_tab = "Templates"
                     st.session_state.selected_action = "Send Email"
                     st.session_state.selected_customer = row["Name"]
-                    st.experimental_rerun()
+                    # st.experimental_rerun()
+                    st.rerun()
+
             elif row["Action"] == "Send SMS":
                 if cols[4].button("Send SMS", key=f"email_{index}"):
                     st.session_state.current_tab = "Templates"
                     st.session_state.selected_action = "Send Email"
                     st.session_state.selected_customer = row["Name"]
-                    st.experimental_rerun()
+                    st.rerun()
+
+                    # st.experimental_rerun()
             elif row["Action"] == "Push Notification":
                 if cols[4].button("Push Notification", key=f"email_{index}"):
                     st.session_state.current_tab = "Templates"
                     st.session_state.selected_action = "Send Email"
                     st.session_state.selected_customer = row["Name"]
-                    st.experimental_rerun()
+                    st.rerun()
+
+                    # st.experimental_rerun()
 
 
             cols[5].write(row["Reason why at Risk"])
