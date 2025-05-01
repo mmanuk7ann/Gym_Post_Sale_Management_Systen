@@ -1,36 +1,107 @@
-from etl.Database.database import SessionLocal
-from etl.Database.helpers import get_active_customers
 import pandas as pd
-from sklearn.cluster import KMeans
+from pathlib import Path  
 from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+current_dir = Path(__file__).parent
+
+# Constructing paths to the CSV files
+data_dir = current_dir.parent / 'etl' / 'data'
+
+# Loading each CSV file
+attendance = pd.read_csv(data_dir / 'attendance.csv')
+customers = pd.read_csv(data_dir / 'customers.csv')
+gyms = pd.read_csv(data_dir / 'gyms.csv')
+packages = pd.read_csv(data_dir / 'packages.csv')
+transactions = pd.read_csv(data_dir / 'transactions.csv')
 
 
-def run_clustering():
-    # Get data using CRUD helper
-    db = SessionLocal()
-    customers = get_active_customers(db)
-    db.close()
+# Converting date columns
+attendance['check_out'] = pd.to_datetime(attendance['check_out'])
+transactions['date'] = pd.to_datetime(transactions['date'])
 
-    if not customers:
-        print("No customers found.")
-        return []
+reference_date = attendance['check_out'].max()
 
-    # Convert to DataFrame
-    df = pd.DataFrame([cust._dict_ for cust in customers])
-    df.drop(columns=["_sa_instance_state", "email", "name", "gender", "phone"], errors="ignore", inplace=True)
+# RFM Metrics
+rfm = attendance.groupby('customer_id').agg({
+    'check_out': lambda x: (reference_date - x.max()).days,
+    'customer_id': 'count'
+}).rename(columns={'check_out': 'Recency', 'customer_id': 'Frequency'}).reset_index()
 
-    # Add simulated features for modeling
-    df["visits_last_month"] = [10, 8, 12, 4, 9][:len(df)]
-    df["total_spent"] = [150, 200, 300, 120, 250][:len(df)]
+monetary = transactions.groupby('customer_id')['amount'].sum().reset_index()
+monetary.columns = ['customer_id', 'Monetary']
+rfm = rfm.merge(monetary, on='customer_id', how='left')
+rfm['Monetary'] = rfm['Monetary'].fillna(0)
 
-    # Preprocess and run KMeans
-    features = df[["visits_last_month", "total_spent"]]
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(features)
 
-    kmeans = KMeans(n_clusters=3, random_state=42)
-    df["cluster"] = kmeans.fit_predict(X_scaled)
+# Scaling RFM values
+scaler = StandardScaler()
+rfm_scaled = scaler.fit_transform(rfm[['Recency', 'Frequency', 'Monetary']])
 
-    print(df[["customer_id", "visits_last_month", "total_spent", "cluster"]])
+# Elbow method to determine optimal number of clusters
+sse = []
+k_range = range(1, 11)
+for k in k_range:
+    km = KMeans(n_clusters=k, random_state=42)
+    km.fit(rfm_scaled)
+    sse.append(km.inertia_)
 
-    return df[["customer_id", "cluster"]].to_dict(orient="records")
+# Plot of the Elbow curve
+plt.figure(figsize=(8, 4))
+plt.plot(k_range, sse, marker='o')
+plt.xlabel('Number of clusters')
+plt.ylabel('SSE (Inertia)')
+plt.title('Elbow Method For Optimal k')
+plt.grid(True)
+#plt.show()
+# According to the plot the optimal number of clusters is 4
+
+# Fitting KMeans with k = 4
+kmeans = KMeans(n_clusters=4, random_state=42)
+rfm['Segment'] = kmeans.fit_predict(rfm_scaled)
+
+
+segment_summary = rfm.groupby('Segment').agg({
+    'Recency': 'mean',
+    'Frequency': 'mean',
+    'Monetary': 'mean',
+    'customer_id': 'count'
+}).rename(columns={'customer_id': 'Count'}).reset_index()
+
+print(segment_summary)
+
+# Average Order Value (AOV) per customer
+transactions['order_count'] = 1
+aov = transactions.groupby('customer_id').agg({
+    'amount': 'sum',
+    'order_count': 'count'
+}).eval('AOV = amount / order_count')
+
+# Merging with Frequency
+rfm = rfm.merge(aov['AOV'], on='customer_id', how='left')
+
+# Estimating CLV 
+rfm['CLV'] = rfm['AOV'] * rfm['Frequency'] * 1  # 1 = assumed lifespan (years)
+rfm = rfm.fillna({'AOV': 0, 'CLV': 0}) # For the customers who haven't 
+
+
+# CLV is calculated based on this formula: CLV = Average Order Value × Purchase Frequency × Average Customer Lifespan
+
+# By analyzing the mean RFM values per segment and comparing them with the CLV values we can see:
+# Segment 0 - Loyalists
+# Segment 1 - At Risk Customers
+# Segment 2 - New/Potenttial Customers
+# Segment 0 - High-Value Customers
+
+# Segment mapping 
+segment_mapping = {
+    0: 'Loyalists',
+    1: 'At Risk Customers',
+    2: 'New/Potential Customers',
+    3: 'High-Value Customers'
+}
+rfm['Segment'] = rfm['Segment'].map(segment_mapping)
+
+print(rfm)
