@@ -1,5 +1,11 @@
 """
-Database Configuration for Gym Project
+database.py
+
+Configures SQLAlchemy for the Gym Project. This script:
+- Loads environment variables from a `.env` file
+- Initializes the database engine using the provided DATABASE_URL
+- Defines a base class for models
+- Creates a session factory for database operations
 """
 
 import sqlalchemy as sql
@@ -25,7 +31,13 @@ SessionLocal = orm.sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db():
     """
-    Dependency function to get a database session.
+    Provides a SQLAlchemy database session.
+
+    This is typically used as a FastAPI dependency to manage 
+    opening and closing database sessions during request handling.
+
+    Yields:
+        Session: A SQLAlchemy database session.
     """
     db = SessionLocal()
     try:
