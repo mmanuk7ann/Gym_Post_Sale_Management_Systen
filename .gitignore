@@ -1,6 +1,6 @@
 # Ignore all markdown files in the feedback directory
 feedback/*.md  
-
+tasks/
 pycache/
 .ipynb_checkpoints
 .env

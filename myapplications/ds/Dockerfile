@@ -6,17 +6,18 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
-WORKDIR /etl
+WORKDIR /ds
 
-COPY requirements.txt . 
+# Copy requirements and install dependencies
+COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy the rest of the application code
+# Copy the rest of the project files
 COPY . .
 
-# Expose port 3000
-EXPOSE 3000
 
-# Command to run the python file
-CMD ["python", "etl_process.py"]
+EXPOSE 8000
+
+
+CMD ["python", "ds_model.py"]
