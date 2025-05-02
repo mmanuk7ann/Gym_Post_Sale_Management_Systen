@@ -1,6 +1,3 @@
-# # app.py
-
-
 import streamlit as st
 import pandas as pd
 
@@ -22,7 +19,6 @@ if "action" in params:
     st.stop()
 
 
-
 def show_login():
     st.markdown("<h1 style='font-size: 40px; font-weight: 600;'>Login</h1>", unsafe_allow_html=True)
     email = st.text_input("Email")
@@ -33,13 +29,11 @@ def show_login():
         if email == "admin@gym.com" and password == "1234":
             st.session_state.logged_in = True
             st.rerun()
-  # This line makes it instantly move to the dashboard
         else:
             st.error("Email or Password is incorrect.")
 
-def show_dashboard():
-    import pandas as pd
 
+def show_dashboard():
     # Custom CSS
     st.sidebar.markdown("""
         <style>
@@ -70,36 +64,29 @@ def show_dashboard():
         </style>
     """, unsafe_allow_html=True)
 
-    # Sidebar layout
+    # Sidebar
     st.sidebar.markdown("### Dashboard Navigation")
 
     if "current_tab" not in st.session_state:
         st.session_state.current_tab = "Dashboard"
 
-    # Tab list
-    tabs = ["Dashboard", "Customers", "Risk Management", "Templates"]
+    # Tabs (Templates removed)
+    tabs = ["Dashboard", "Customers", "Risk Management"]
 
-    # Display as styled buttons
     for tab in tabs:
         button_style = "tab-button"
         if st.session_state.current_tab == tab:
             button_style += " tab-active"
-
         if st.sidebar.button(f"{tab}", key=tab):
             st.session_state.current_tab = tab
 
-    # Logout button at bottom
-    with st.sidebar:
-        st.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
+    st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
 
-    # Page logic
     page = st.session_state.current_tab
 
     if page == "Dashboard":
-
         st.markdown("<h1 style='font-size: 40px; font-weight: 700;'>Welcome, Gold's Gym!</h1>", unsafe_allow_html=True)
 
-        # Card styles
         card_style = """
             background-color: #f9f9f9;
             padding: 1.5rem;
@@ -113,22 +100,15 @@ def show_dashboard():
             justify-content: center;
         """
 
-
-        # Create 4 cards
         col1, col2, col3, col4 = st.columns(4)
-
         with col1:
             st.markdown(f"<div style='{card_style}'><h4>Total Members</h4><h2>124</h2></div>", unsafe_allow_html=True)
-
         with col2:
             st.markdown(f"<div style='{card_style}'><h4>At-Risk Members</h4><h2>19</h2></div>", unsafe_allow_html=True)
-
         with col3:
             st.markdown(f"<div style='{card_style}'><h4>Avg. CLV</h4><h2>$320</h2></div>", unsafe_allow_html=True)
-
         with col4:
             st.markdown(f"<div style='{card_style}'><h4>Monthly Retention</h4><h2>87%</h2></div>", unsafe_allow_html=True)
-
 
         st.subheader("🔔 Alerts")
         st.warning("Churn rate has increased by 15% in the last 30 days.")
@@ -136,7 +116,6 @@ def show_dashboard():
 
     elif page == "Customers":
         st.title("👥 Customers")
-
         customer_data = {
             "Name": ["Jane Smith", "John Doe", "Emma Brown", "Mark Lee", "Sara White"],
             "Email": ["jane@gym.com", "john@gym.com", "emma@gym.com", "mark@gym.com", "sara@gym.com"],
@@ -144,28 +123,22 @@ def show_dashboard():
             "Membership": ["Premium", "Basic", "Premium", "Basic", "Premium"],
             "Gender": ["Female", "Male", "Female", "Male", "Female"]
         }
-
         df_customers = pd.DataFrame(customer_data)
-        # Filters
-        col1, col2, col3 = st.columns(3)
 
+        col1, col2, col3 = st.columns(3)
         with col1:
-            selected_membership = st.selectbox("Filter by Membership", options=["All"] + sorted(df_customers["Membership"].unique()))
+            selected_membership = st.selectbox("Filter by Membership", ["All"] + sorted(df_customers["Membership"].unique()))
         with col2:
-            selected_gender = st.selectbox("Filter by Gender", options=["All"] + sorted(df_customers["Gender"].unique()))
+            selected_gender = st.selectbox("Filter by Gender", ["All"] + sorted(df_customers["Gender"].unique()))
         with col3:
             name_search = st.text_input("Search by Name")
 
-        # Apply filters
         if selected_membership != "All":
             df_customers = df_customers[df_customers["Membership"] == selected_membership]
-
         if selected_gender != "All":
             df_customers = df_customers[df_customers["Gender"] == selected_gender]
-
         if name_search:
             df_customers = df_customers[df_customers["Name"].str.contains(name_search, case=False)]
-
 
         st.dataframe(df_customers, use_container_width=True)
 
@@ -174,135 +147,64 @@ def show_dashboard():
 
         data = {
             "Name": ["Jane Smith"] * 10,
+            "Email": ["jane@gym.com"] * 10,
             "Last Visit": ["March 12 2025"] * 10,
-            "Membership": ["Premium", "Premium", "Premium", "Premium", "Starter", "Starter", "Pro", "Pro", "Pro", "Starter"] ,
+            "Membership": ["Premium", "Premium", "Premium", "Premium", "Starter", "Starter", "Pro", "Pro", "Pro", "Starter"],
             "Risk": ["High"] * 10,
-            "Action": ["Send Email", "Send Email", "Send Email", "Send SMS", "Push Notification", "Send Email", "Send Email", "Send Email", "Send Email", "Send Email" ],
             "Reason why at Risk": ["x days inactive"] * 10
         }
-
         df = pd.DataFrame(data)
 
-    # Filters section
         col1, col2 = st.columns(2)
         with col1:
-            selected_membership = st.selectbox("Filter by Membership Type", options=["All"] + sorted(df["Membership"].unique()))
+            selected_membership = st.selectbox("Filter by Membership Type", ["All"] + sorted(df["Membership"].unique()))
         with col2:
             search_name = st.text_input("Search by Name")
 
-        # Apply filters
         if selected_membership != "All":
             df = df[df["Membership"] == selected_membership]
-
         if search_name:
             df = df[df["Name"].str.contains(search_name, case=False)]
-        if selected_membership != "All":
-            df = df[df["Membership"] == selected_membership]
 
-        #CHANGES MADE FROM HERE
+        if "selected_email_row" not in st.session_state:
+            st.session_state.selected_email_row = None
 
-        # Render custom table with action buttons
-        st.write("###")
-                # Header row
-        with st.container():
-            st.markdown("<div style='max-height: 500px; overflow-y: auto;'>", unsafe_allow_html=True)
-        header_cols = st.columns([2, 2, 2, 1.5, 2, 2])
+        # Header
+        header_cols = st.columns([1.8, 2.5, 2, 2, 1.5, 1.5, 2])
         header_cols[0].markdown("**Name**")
-        header_cols[1].markdown("**Last Visit**")
-        header_cols[2].markdown("**Membership**")
-        header_cols[3].markdown("**Risk**")
-        header_cols[4].markdown("**Action**")
-        header_cols[5].markdown("**Reason why at Risk**")
-        # st.markdown("---")
+        header_cols[1].markdown("**Email**")
+        header_cols[2].markdown("**Last Visit**")
+        header_cols[3].markdown("**Membership**")
+        header_cols[4].markdown("**Risk**")
+        header_cols[5].markdown("**Action**")
+        header_cols[6].markdown("**Reason why at Risk**")
 
         for index, row in df.iterrows():
-            cols = st.columns([2, 2, 2, 1.5, 2, 2])
+            cols = st.columns([1.8, 2.5, 2, 2, 1.5, 1.5, 2])
             cols[0].write(row["Name"])
-            cols[1].write(row["Last Visit"])
-            cols[2].write(row["Membership"])
-            cols[3].write(row["Risk"])
+            cols[1].markdown(f"[{row['Email']}](mailto:{row['Email']})")  # Clickable mailto link
+            cols[2].write(row["Last Visit"])
+            cols[3].write(row["Membership"])
+            cols[4].write(row["Risk"])
 
-            if row["Action"] == "Send Email":
-                if cols[4].button("Send Email", key=f"email_{index}"):
-                    st.session_state.current_tab = "Templates"
-                    st.session_state.selected_action = "Send Email"
-                    st.session_state.selected_customer = row["Name"]
-                    # st.experimental_rerun()
+            if cols[5].button("Send Email", key=f"email_btn_{index}"):
+                st.session_state.selected_email_row = index
+                st.rerun()
+
+            cols[6].write(row["Reason why at Risk"])
+
+            if st.session_state.selected_email_row == index:
+                st.markdown("##### ✉️ Compose Email")
+                subject = st.text_input("Subject", key=f"subject_{index}")
+                message = st.text_area("Message", key=f"message_{index}")
+                send_col, cancel_col = st.columns([0.15, 0.1])
+                if send_col.button("Send", key=f"send_{index}"):
+                    st.success(f"Email sent to {row['Name']} (simulated)")
+                    st.session_state.selected_email_row = None
                     st.rerun()
-
-            elif row["Action"] == "Send SMS":
-                if cols[4].button("Send SMS", key=f"email_{index}"):
-                    st.session_state.current_tab = "Templates"
-                    st.session_state.selected_action = "Send Email"
-                    st.session_state.selected_customer = row["Name"]
+                if cancel_col.button("Cancel", key=f"cancel_{index}"):
+                    st.session_state.selected_email_row = None
                     st.rerun()
-
-                    # st.experimental_rerun()
-            elif row["Action"] == "Push Notification":
-                if cols[4].button("Push Notification", key=f"email_{index}"):
-                    st.session_state.current_tab = "Templates"
-                    st.session_state.selected_action = "Send Email"
-                    st.session_state.selected_customer = row["Name"]
-                    st.rerun()
-
-                    # st.experimental_rerun()
-
-
-            cols[5].write(row["Reason why at Risk"])
-            #UP TO HERE
-
-        st.markdown("</div>", unsafe_allow_html=True)
-    elif page == "Templates":
-        st.title("📨 Communication Templates")
-
-
-        tabs = st.tabs(["Email Templates", "SMS Templates", "Push Notification Templates"])
-
-        with tabs[0]:
-            st.subheader("Email Templates")
-            st.markdown("**Option 1:**")
-            st.code("""Subject: We miss you at the gym, {{name}}!
-
-        Hi {{name}},
-
-        We noticed you haven't visited in a while. We'd love to have you back!
-        Here's a special offer just for you.
-
-        See you soon,
-        Gold's Gym Team
-        """)
-
-            st.markdown("**Option 2:**")
-            st.code("""Subject: Your fitness journey isn't over!
-
-        Hi {{name}},
-
-        Don't stop now! We believe in you.
-        Check out our new programs starting this month.
-
-        - Gold's Gym Team
-        """)
-
-        with tabs[1]:
-            st.subheader("SMS Templates")
-            st.markdown("**Option 1:**")
-            st.code("Hey {{name}}, we miss you at Gold’s Gym! Come back this week for a special offer 💪")
-
-            st.markdown("**Option 2:**")
-            st.code("Your fitness goals are waiting, {{name}}. We’ve got something exciting just for you!")
-
-        with tabs[2]:
-            st.subheader("Push Notification Templates")
-            st.markdown("**Option 1:**")
-            st.code("🏋️‍♂️ Don’t forget your workout today, {{name}}!")
-
-            st.markdown("**Option 2:**")
-            st.code("🔥 {{name}}, it’s time to crush your goals at Gold’s Gym!")
-
-
-        st.markdown("---")
-        st.button("Back to Risk Management", on_click=lambda: st.session_state.update({"current_tab": "Risk Management"}))
-
 
 
 
@@ -316,4 +218,3 @@ if __name__ == "__main__":
     print("\n" + "="*60)
     print("📢  Open your browser and visit: http://localhost:8501")
     print("="*60 + "\n")
-
