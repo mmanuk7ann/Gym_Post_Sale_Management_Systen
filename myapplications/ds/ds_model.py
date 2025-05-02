@@ -3,7 +3,7 @@ from pathlib import Path
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
-import seaborn as sns
+
 
 current_dir = Path(__file__).parent
 
@@ -55,7 +55,7 @@ plt.xlabel('Number of clusters')
 plt.ylabel('SSE (Inertia)')
 plt.title('Elbow Method For Optimal k')
 plt.grid(True)
-#plt.show()
+plt.show()
 # According to the plot the optimal number of clusters is 4
 
 # Fitting KMeans with k = 4
@@ -97,11 +97,39 @@ rfm = rfm.fillna({'AOV': 0, 'CLV': 0}) # For the customers who haven't
 
 # Segment mapping 
 segment_mapping = {
-    0: 'Loyalists',
-    1: 'At Risk Customers',
-    2: 'New/Potential Customers',
-    3: 'High-Value Customers'
+    0: 'Loyalist',
+    1: 'At Risk',
+    2: 'New/Potential',
+    3: 'High-Value'
 }
 rfm['Segment'] = rfm['Segment'].map(segment_mapping)
 
 print(rfm)
+
+
+# Saving Results to new DataFrames
+
+clv_df = rfm[["customer_id", "CLV", "AOV", "Segment"]].copy()
+clv_df = clv_df.rename(columns={
+    "CLV": "clv_value",
+    "AOV": "average_order_value",
+    "Segment": "predicted_customer_type"
+})
+clv_df.insert(0, "clv_id", range(1, len(clv_df) + 1))  # auto-increment ID
+
+# Saving clv.csv
+#clv_df.to_csv(data_dir / "clv.csv", index=False)
+
+
+rfm_df = rfm[["customer_id", "Recency", "Frequency", "Monetary", "Segment"]].copy()
+rfm_df = rfm_df.rename(columns={
+    "Recency": "recency_score",
+    "Frequency": "frequency_score",
+    "Monetary": "mointory_score",  # per your original spelling
+    "Segment": "customer_segment"
+})
+rfm_df.insert(0, "rfm_id", range(1, len(rfm_df) + 1))  # auto-increment ID
+
+# Saving rfm.csv
+#rfm_df.to_csv(data_dir / "rfm.csv", index=False)
+
