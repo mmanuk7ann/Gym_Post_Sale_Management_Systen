@@ -50,6 +50,8 @@ class Customer(Base):
     package = relationship("Package", back_populates="customers")
     transactions = relationship("Transaction", back_populates="customer")
     attendance_records = relationship("Attendance", back_populates="customer")
+    clv_record = relationship("CLV", uselist=False, back_populates="customer")
+    rfm_record = relationship("RFM", uselist=False, back_populates="customer")
 
 
 class Transaction(Base):
@@ -72,3 +74,30 @@ class Attendance(Base):
     check_out = Column(DateTime)
 
     customer = relationship("Customer", back_populates="attendance_records")
+
+
+class CLV(Base):
+    __tablename__ = 'clv'
+
+    clv_id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customers.customer_id'))
+    clv_value = Column(DECIMAL)
+    average_order_value = Column(DECIMAL)
+    predicted_customer_type = Column(String)
+
+    customer = relationship("Customer", back_populates="clv_record")
+
+
+class RFM(Base):
+    __tablename__ = 'rfm'
+
+    rfm_id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customers.customer_id'))
+    recency_score = Column(Integer)
+    frequency_score = Column(Integer)
+    monetary_score = Column(DECIMAL)  # Fixed typo from 'mointory_score'
+    customer_segment = Column(String)
+
+    customer = relationship("Customer", back_populates="rfm_record")
+
+
