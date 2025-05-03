@@ -110,9 +110,29 @@ def show_dashboard():
         with col4:
             st.markdown(f"<div style='{card_style}'><h4>Monthly Retention</h4><h2>87%</h2></div>", unsafe_allow_html=True)
 
-        st.subheader("🔔 Alerts")
-        st.warning("Churn rate has increased by 15% in the last 30 days.")
-        st.line_chart({"Churn Rate (%)": [10, 12, 13, 14, 15]})
+        st.subheader("📊 Member Distribution by Package")
+        st.info("Here's a breakdown of active members by membership type.")
+
+
+        membership_counts = {
+            "Basic": 30,
+            "Premium": 70,
+            "Starter": 25
+        }
+
+
+        df_chart = pd.DataFrame({
+            "Membership Type": list(membership_counts.keys()),
+            "Members": list(membership_counts.values())
+        })
+
+
+        df_chart.set_index("Membership Type", inplace=True)
+
+
+        # Using Streamlit native bar chart (limited styling)
+        st.bar_chart(df_chart)
+
 
     elif page == "Customers":
         st.title("👥 Customers")
@@ -150,7 +170,6 @@ def show_dashboard():
             "Email": ["jane@gym.com"] * 10,
             "Last Visit": ["March 12 2025"] * 10,
             "Membership": ["Premium", "Premium", "Premium", "Premium", "Starter", "Starter", "Pro", "Pro", "Pro", "Starter"],
-            "Risk": ["High"] * 10,
             "Reason why at Risk": ["x days inactive"] * 10
         }
         df = pd.DataFrame(data)
@@ -169,29 +188,27 @@ def show_dashboard():
         if "selected_email_row" not in st.session_state:
             st.session_state.selected_email_row = None
 
-        # Header
-        header_cols = st.columns([1.8, 2.5, 2, 2, 1.5, 1.5, 2])
+        # Header (no Risk column)
+        header_cols = st.columns([1.8, 2.5, 2, 2, 1.5, 2])
         header_cols[0].markdown("**Name**")
         header_cols[1].markdown("**Email**")
         header_cols[2].markdown("**Last Visit**")
         header_cols[3].markdown("**Membership**")
-        header_cols[4].markdown("**Risk**")
-        header_cols[5].markdown("**Action**")
-        header_cols[6].markdown("**Reason why at Risk**")
+        header_cols[4].markdown("**Action**")
+        header_cols[5].markdown("**Reason why at Risk**")
 
         for index, row in df.iterrows():
-            cols = st.columns([1.8, 2.5, 2, 2, 1.5, 1.5, 2])
+            cols = st.columns([1.8, 2.5, 2, 2, 1.5, 2])
             cols[0].write(row["Name"])
-            cols[1].markdown(f"[{row['Email']}](mailto:{row['Email']})")  # Clickable mailto link
+            cols[1].markdown(f"[{row['Email']}](mailto:{row['Email']})")
             cols[2].write(row["Last Visit"])
             cols[3].write(row["Membership"])
-            cols[4].write(row["Risk"])
 
-            if cols[5].button("Send Email", key=f"email_btn_{index}"):
+            if cols[4].button("Send Email", key=f"email_btn_{index}"):
                 st.session_state.selected_email_row = index
                 st.rerun()
 
-            cols[6].write(row["Reason why at Risk"])
+            cols[5].write(row["Reason why at Risk"])
 
             if st.session_state.selected_email_row == index:
                 st.markdown("##### ✉️ Compose Email")
@@ -205,6 +222,7 @@ def show_dashboard():
                 if cancel_col.button("Cancel", key=f"cancel_{index}"):
                     st.session_state.selected_email_row = None
                     st.rerun()
+
 
 
 
