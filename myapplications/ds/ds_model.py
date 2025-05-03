@@ -135,16 +135,19 @@ rfm_df.insert(0, "rfm_id", range(1, len(rfm_df) + 1))  # auto-increment ID
 
 
 
-# Calculating Churn Rate and Retention Rate
+# Calculating Retention Rate
 
-# Churn Rate is defined as Recency > 90 days
+def calculate_retention_rate(rfm_df, churn_threshold=90):
+    """
+    Calculate retention rate based on a recency threshold.
 
-churn_threshold = 90
-total_customers = rfm.shape[0]
-churned_customers = rfm[rfm["Recency"] > churn_threshold].shape[0]
+    """
+    total_customers = rfm_df.shape[0]
+    churned_customers = rfm_df[rfm_df["Recency"] > churn_threshold].shape[0]
 
-churn_rate = churned_customers / total_customers
-retention_rate = 1 - churn_rate
+    retention_rate = (1 - churned_customers / total_customers) * 100
+    return retention_rate
 
-print(f"Churn Rate: {churn_rate:.2%}")
-print(f"Retention Rate: {retention_rate:.2%}")
+
+retention = calculate_retention_rate(rfm)
+print(f"Retention Rate: {retention:.2f}%")
