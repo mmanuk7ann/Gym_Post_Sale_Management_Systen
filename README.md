@@ -42,7 +42,7 @@ docker-compose up --build
 
 ## ER Diagram
 
-![ER Diagram](docs/ERD.png)
+![ER Diagram](docs/ERD.jpg)
 
 ---
 

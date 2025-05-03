@@ -3,7 +3,6 @@ feedback/*.md
 tasks/
 pycache/
 .ipynb_checkpoints
-.env
 .venv
 .idea
 .vscode
@@ -44,15 +43,10 @@ venv/
 env/
 ENV/
 .venv/
-.env/
 .ENV/
 pip-log.txt
 pip-delete-this-directory.txt
 venv_docs/
-
-# Environments and secrets
-.env
-.env.*
 
 # PyInstaller
 *.manifest
