@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     SMTP_USER: str
     SMTP_PASSWORD: str
     EMAIL_FROM: EmailStr
+    EMAIL_TLS: bool = True
 
     class Config:
         env_file = ".env"
