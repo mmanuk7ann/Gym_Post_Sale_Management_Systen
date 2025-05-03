@@ -9,7 +9,7 @@ from myapplications.api.utils.email import send_email
 router = APIRouter(prefix="/email", tags=["email"])
 
 @router.post("/send")
-def send_customer_email(
+async def send_customer_email(
     payload: EmailSend,
     bg: BackgroundTasks,
     db: Session = Depends(get_db),
