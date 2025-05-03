@@ -55,7 +55,7 @@ plt.xlabel('Number of clusters')
 plt.ylabel('SSE (Inertia)')
 plt.title('Elbow Method For Optimal k')
 plt.grid(True)
-plt.show()
+#plt.show()
 # According to the plot the optimal number of clusters is 4
 
 # Fitting KMeans with k = 4
@@ -133,3 +133,21 @@ rfm_df.insert(0, "rfm_id", range(1, len(rfm_df) + 1))  # auto-increment ID
 # Saving rfm.csv
 #rfm_df.to_csv(data_dir / "rfm.csv", index=False)
 
+
+
+# Calculating Retention Rate
+
+def calculate_retention_rate(rfm_df, churn_threshold=90):
+    """
+    Calculate retention rate based on a recency threshold.
+
+    """
+    total_customers = rfm_df.shape[0]
+    churned_customers = rfm_df[rfm_df["Recency"] > churn_threshold].shape[0]
+
+    retention_rate = (1 - churned_customers / total_customers) * 100
+    return retention_rate
+
+
+retention = calculate_retention_rate(rfm)
+print(f"Retention Rate: {retention:.2f}%")
