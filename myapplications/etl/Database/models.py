@@ -27,10 +27,12 @@ class Gym(Base):
 
     gym_id = Column(Integer, primary_key=True)
     name = Column(String)
+    email = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
     username = Column(String)
     address = Column(String)
     phone = Column(String)
-
+    
     customers = relationship("Customer", back_populates="gym")
     packages = relationship("Package", back_populates="gym")
 
