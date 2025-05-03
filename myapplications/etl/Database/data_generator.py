@@ -1,3 +1,10 @@
+"""
+data_generator.py
+
+This module uses the Faker library to generate synthetic data for a gym membership database.
+It includes generators for gyms, packages, customers, transactions, and attendance records.
+"""
+
 from faker import Faker
 import random
 from datetime import datetime, timedelta
@@ -6,6 +13,15 @@ fake = Faker()
 
 # ----- Gyms -----
 def generate_gym(gym_id):
+    """
+    Generate a fake gym record.
+
+    Args:
+        gym_id (int): Unique ID for the gym.
+
+    Returns:
+        dict: A dictionary representing a gym.
+    """
     return {
         "gym_id": gym_id,
         "name": fake.company(),
@@ -16,6 +32,16 @@ def generate_gym(gym_id):
 
 # ----- Packages -----
 def generate_package(package_id, gym_id):
+    """
+    Generate a fake package record.
+
+    Args:
+        package_id (int): Unique ID for the package.
+        gym_id (int): ID of the gym offering the package.
+
+    Returns:
+        dict: A dictionary representing a gym package.
+    """
     return {
         "package_id": package_id,
         "gym_id": gym_id,
@@ -27,6 +53,17 @@ def generate_package(package_id, gym_id):
 
 # ----- Customers -----
 def generate_customer(customer_id, gym_id, package_id):
+    """
+    Generate a fake customer record.
+
+    Args:
+        customer_id (int): Unique ID for the customer.
+        gym_id (int): ID of the gym the customer belongs to.
+        package_id (int): ID of the package the customer is subscribed to.
+
+    Returns:
+        dict: A dictionary representing a customer.
+    """
     return {
         "customer_id": customer_id,
         "gym_id": gym_id,
@@ -43,6 +80,16 @@ def generate_customer(customer_id, gym_id, package_id):
 
 # ----- Transactions -----
 def generate_transaction(transaction_id, customer_id):
+    """
+    Generate a fake transaction record.
+
+    Args:
+        transaction_id (int): Unique ID for the transaction.
+        customer_id (int): ID of the customer who made the transaction.
+
+    Returns:
+        dict: A dictionary representing a transaction.
+    """
     return {
         "transaction_id": transaction_id,
         "customer_id": customer_id,
@@ -52,6 +99,16 @@ def generate_transaction(transaction_id, customer_id):
 
 # ----- Attendance -----
 def generate_attendance(attendance_id, customer_id):
+    """
+    Generate a fake attendance record.
+
+    Args:
+        attendance_id (int): Unique ID for the attendance session.
+        customer_id (int): ID of the customer who attended.
+
+    Returns:
+        dict: A dictionary representing an attendance record with check-in and check-out times.
+    """
     check_in = fake.date_time_between(start_date='-1y', end_date='now')
     check_out = check_in + timedelta(hours=random.randint(1, 3))
 
