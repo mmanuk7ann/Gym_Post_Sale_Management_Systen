@@ -1,0 +1,163 @@
+# 📘 API Endpoints Documentation
+
+This document describes key API endpoints for the MVP version of the application.
+
+---
+
+## 📧 POST `/email/send` — Send Email to Customer
+
+**Description:**  
+Sends an email to a specified customer on behalf of the authenticated gym. The email is sent asynchronously as a background task, so the request returns immediately.
+
+**Authentication:** Internal — gym must be authenticated
+
+**Request Body (JSON):**
+
+```
+{
+  "email": "customer@example.com",
+  "text": "Your subscription has been updated."
+}
+```
+
+--- 
+
+## 🔐 POST `/auth/login` — Gym Login
+
+**Description:**
+Authenticates a gym using email and password credentials. Returns a JWT token that should be used for authenticated requests.
+
+**Authentication:** Public
+
+**Request Parameters (Form-encoded):**
+
+username (string) — Gym email
+password (string) — Gym password
+
+```
+{
+  "access_token": "<JWT_TOKEN>",
+  "token_type": "bearer"
+}
+```
+
+---
+
+## 👥 GET `/customer/all` — List All Customers
+
+**Description:**
+Retrieves a list of all customers associated with the currently authenticated gym.
+
+**Authentication:** Gym must be logged in (JWT token)
+
+Response:
+
+```
+[
+  {
+    "customer_id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "join_date": "2024-12-01",
+    "status": "active"
+  },
+  ...
+]
+```
+
+--- 
+
+## ⚠️ GET `/customers/customer/risk` — List At-Risk Customers
+
+**Description:**
+Returns a list of customers flagged as "at risk" of churning, based on internal logic such as infrequent attendance, nearing the end of subscription, or lack of engagement.
+
+**Authentication:** Gym must be logged in (JWT token)
+
+Response:
+
+```
+[
+  {
+    "customer_id": 7,
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "risk_status": "high",
+    "last_attendance": "2025-04-01"
+  },
+  ...
+]
+```
+
+---
+
+## 📊 GET `/gyms/gym/members-count` — Get Total Member Count
+
+**Description:**
+Returns the total number of registered members (customers) currently associated with the authenticated gym. Useful for dashboards and analytics.
+
+**Authentication:** Gym must be logged in (JWT token)
+
+Response:
+
+```
+{
+  "count": 42
+}
+```
+
+---
+
+## 📈 GET `/gym/average-clv` — Get Average Customer Lifetime Value (CLV)
+
+**Description:**  
+Returns the average Customer Lifetime Value (CLV) for all customers registered under the authenticated gym. Useful for understanding long-term customer value and guiding retention strategies.
+
+**Authentication:** Gym must be logged in (JWT token)
+
+**Response:**
+```
+{
+  "average_clv": 2485.75
+}
+```
+
+---
+
+## 📦 GET `/gym/customers-by-package` — Customers Grouped by Package
+
+**Description:**  
+Returns the total number of customers grouped by the subscription package they are enrolled in, specific to the authenticated gym. Useful for visualizing package popularity and usage distribution.
+
+**Authentication:** Gym must be logged in (JWT token)
+
+**Response:**
+```
+{
+  "packages": [
+    {
+      "package_name": "Plus Plan",
+      "total_customers": 18
+    },
+    {
+      "package_name": "Basic Plan",
+      "total_customers": 32
+    }
+  ]
+}
+```
+
+---
+
+## 📉 GET `/gym/retention-rate` — Customer Retention Rate (Coming Soon)
+
+**Description:**  
+**[Not yet implemented]**  
+This endpoint is intended to return the retention rate of customers for the authenticated gym — a key metric indicating how well the gym retains its members over time.
+
+**Authentication:** Gym must be logged in (JWT token)
+
+**Response (Planned):**
+```
+75
+```
