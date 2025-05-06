@@ -28,7 +28,7 @@ services:
       - 5050:80 # for local browser
     volumes:
       - ./pgadmin_data:/var/lib/pgadmin  # Persisting pgAdmin configuration and sessions
-    depends_on: 
+    depends_on:
       - db
 
   frontend:
@@ -40,6 +40,8 @@ services:
     volumes:
       - ./frontend:/app
     command: streamlit run app.py --server.port=8501 --server.enableCORS=false --server.address=0.0.0.0
+#    depends_on:
+#      -
 
 
   etl:
@@ -71,5 +73,16 @@ services:
         condition: service_healthy
     healthcheck:
       test: "exit 0"
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
 
     
