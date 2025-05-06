@@ -65,7 +65,7 @@ services:
       - "8000:8000" 
     volumes:
       - ./ds:/ds                
-      - ./myapplications/etl:/etl 
+      - ./etl:/etl
     depends_on:
       db:
         condition: service_healthy
