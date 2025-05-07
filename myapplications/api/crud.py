@@ -3,8 +3,8 @@ from decimal import Decimal
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from sqlalchemy import select
-import Database.models as models
-import utils.security as sec
+import myapplications.api.Database.models as models
+import myapplications.api.utils.security as sec
 
 # --- Auth / Gym ---
 def get_gym_by_email(db: Session, email: str):

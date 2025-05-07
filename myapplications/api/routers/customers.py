@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 
-from Database.database import get_db
+from myapplications.api.Database.database import get_db
 
-from dependencies import get_current_gym
-from crud import get_customers_for_gym, get_risk_customers_for_gym
-from Database.schemas import CustomerOut, RiskCustomerOut
+from myapplications.api.dependencies import get_current_gym
+from myapplications.api.crud import get_customers_for_gym, get_risk_customers_for_gym
+from myapplications.api.Database.schemas import CustomerOut, RiskCustomerOut
 
 router = APIRouter(prefix="/customers", tags=["customers"])
 
