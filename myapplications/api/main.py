@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from myapplications.api.Database.database import engine, Base
-from myapplications.api.routers import auth, gyms, customers, email
+from Database.database import engine, Base
+from routers import auth, gyms, customers, email
 
 
 # Create all tables (in prod use Alembic instead)
