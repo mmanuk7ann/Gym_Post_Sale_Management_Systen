@@ -123,4 +123,4 @@ ehthumbs.db
 
 site/
 
-./postgres_datamyapplications/postgres_data/
+./myapplications/postgres_data/

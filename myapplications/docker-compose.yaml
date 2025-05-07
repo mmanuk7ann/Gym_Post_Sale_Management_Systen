@@ -63,8 +63,6 @@ services:
     container_name: ds
     build:
       context: ./ds
-    ports:
-      - "8000:8000" 
     volumes:
       - ./ds:/ds                
       - ./etl:/etl
