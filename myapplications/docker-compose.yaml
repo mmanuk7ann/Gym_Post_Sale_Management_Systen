@@ -67,7 +67,7 @@ services:
       - "8000:8000" 
     volumes:
       - ./ds:/ds                
-      - ./myapplications/etl:/etl 
+      - ./etl:/etl
     depends_on:
       db:
         condition: service_healthy
@@ -84,5 +84,12 @@ services:
       - .env
     ports:
       - "8000:8000"
-
-    
+    # environment:
+    #   DATABASE_URL: "${DATABASE_URL}"
+    #   DB_USER: "${DB_USER}"
+    #   DB_PASSWORD: "${DB_PASSWORD}"
+    #   DB_NAME: "${DB_NAME}"
+    #   PGADMIN_EMAIL: "${PGADMIN_EMAIL}"
+    #   PGADMIN_PASSWORD: "${PGADMIN_PASSWORD}"
+    ports:
+      - "8000:8000"

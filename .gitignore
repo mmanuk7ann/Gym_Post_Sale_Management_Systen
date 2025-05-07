@@ -122,3 +122,5 @@ Thumbs.db
 ehthumbs.db
 
 site/
+
+./postgres_data
