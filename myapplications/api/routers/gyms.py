@@ -3,12 +3,12 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from Database.database import get_db
-from dependencies import get_current_gym
-from crud import get_member_count, get_average_clv, get_customers_by_package, get_risk_customer_count_for_gym
-from Database.schemas import CountResponse
-from Database.schemas import AverageCLVResponse
-from Database.schemas import PackageCustomerSumListResponse, PackageCustomerSumResponse
+from myapplications.api.Database.database import get_db
+from myapplications.api.dependencies import get_current_gym
+from myapplications.api.crud import get_member_count, get_average_clv, get_customers_by_package, get_risk_customer_count_for_gym
+from myapplications.api.Database.schemas import CountResponse
+from myapplications.api.Database.schemas import AverageCLVResponse
+from myapplications.api.Database.schemas import PackageCustomerSumListResponse, PackageCustomerSumResponse
 
 router = APIRouter(prefix="/gyms", tags=["gyms"])
 
