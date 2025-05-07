@@ -75,6 +75,7 @@ services:
       test: "exit 0"
 
   api:
+    container_name: api
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -84,4 +85,3 @@ services:
       - .env
     ports:
       - "8000:8000"
-
