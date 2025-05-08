@@ -1,6 +1,7 @@
 # Ignore all markdown files in the feedback directory
 feedback/*.md  
 tasks/
+tasks copy/
 pycache/
 .ipynb_checkpoints
 .venv
