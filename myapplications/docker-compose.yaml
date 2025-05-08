@@ -57,7 +57,7 @@ services:
     healthcheck:
       test: "exit 0"
     environment:
-      - DATABASE_URL=postgresql://user:password@postgresql_db:5432/dbname
+      - DATABASE_URL=postgresql+psycopg2://postgres:password@postgresql_db:5432/demodb
   
   ds:
     container_name: ds
@@ -78,7 +78,10 @@ services:
       context: ./api
       dockerfile: Dockerfile
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: "exit 0"
     env_file:
       - .env
     ports:
