@@ -3,10 +3,6 @@ import pandas as pd
 
 st.set_page_config(page_title="Gym Dashboard", layout="wide")
 
-# Initialize session state
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
 params = st.query_params
 selected_tab = params.get("tab", "email")  # default to "email"
 customer_name = params.get("customer", "")
@@ -17,20 +13,6 @@ if "action" in params:
     st.title(f"{action.title()} Template for {customer}")
     st.markdown(f"Here you can show templates or forms for sending a {action.upper()} to {customer}.")
     st.stop()
-
-
-def show_login():
-    st.markdown("<h1 style='font-size: 40px; font-weight: 600;'>Login</h1>", unsafe_allow_html=True)
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
-    login_btn = st.button("Log In")
-
-    if login_btn:
-        if email == "admin@gym.com" and password == "1234":
-            st.session_state.logged_in = True
-            st.rerun()
-        else:
-            st.error("Email or Password is incorrect.")
 
 
 def show_dashboard():
@@ -70,7 +52,7 @@ def show_dashboard():
     if "current_tab" not in st.session_state:
         st.session_state.current_tab = "Dashboard"
 
-    # Tabs (Templates removed)
+    # Tabs
     tabs = ["Dashboard", "Customers", "Risk Management"]
 
     for tab in tabs:
@@ -79,8 +61,6 @@ def show_dashboard():
             button_style += " tab-active"
         if st.sidebar.button(f"{tab}", key=tab):
             st.session_state.current_tab = tab
-
-    st.sidebar.button("Logout", on_click=lambda: st.session_state.update({"logged_in": False}))
 
     page = st.session_state.current_tab
 
@@ -113,26 +93,19 @@ def show_dashboard():
         st.subheader("📊 Member Distribution by Package")
         st.info("Here's a breakdown of active members by membership type.")
 
-
         membership_counts = {
             "Basic": 30,
             "Premium": 70,
             "Starter": 25
         }
 
-
         df_chart = pd.DataFrame({
             "Membership Type": list(membership_counts.keys()),
             "Members": list(membership_counts.values())
         })
 
-
         df_chart.set_index("Membership Type", inplace=True)
-
-
-        # Using Streamlit native bar chart (limited styling)
         st.bar_chart(df_chart)
-
 
     elif page == "Customers":
         st.title("👥 Customers")
@@ -188,7 +161,6 @@ def show_dashboard():
         if "selected_email_row" not in st.session_state:
             st.session_state.selected_email_row = None
 
-        # Header (no Risk column)
         header_cols = st.columns([1.8, 2.5, 2, 2, 1.5, 2])
         header_cols[0].markdown("**Name**")
         header_cols[1].markdown("**Email**")
@@ -224,15 +196,10 @@ def show_dashboard():
                     st.rerun()
 
 
-
-
-# Control flow
-if st.session_state.logged_in:
-    show_dashboard()
-else:
-    show_login()
+# Show the dashboard directly
+show_dashboard()
 
 if __name__ == "__main__":
     print("\n" + "="*60)
-    print("📢  Open your browser and visit: http://localhost:8501")
+    print("Open your browser and visit: http://localhost:8501")
     print("="*60 + "\n")
