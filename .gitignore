@@ -1,7 +1,11 @@
 # Ignore all markdown files in the feedback directory
 feedback/*.md  
 tasks/
-tasks copy/
+
+pgadmin_data/
+postgres_data/
+
+
 pycache/
 .ipynb_checkpoints
 .venv
