@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
 from sqlalchemy.orm import Session
 from sqlalchemy import func, cast, Date
@@ -55,18 +55,38 @@ def get_average_clv(db: Session, gym_id: int) -> Decimal | float:
     :param gym_id: ID of the gym to filter customers
     :return: The average CLV value
     """
-    # Query the CLV values for all customers related to the gym
-    clv_values = db.query(models.CLV.clv_value).join(models.Customer).filter(models.Customer.gym_id == gym_id).all()
+    avg_raw = (
+        db.query(func.avg(models.CLV.clv_value))
+          .join(models.Customer)
+          .filter(models.Customer.gym_id == gym_id)
+          .scalar()
+    )
+    # If no records, treat as zero
+    if avg_raw is None:
+        return Decimal("0.00")
 
-    # If there are no CLV records, return 0 as the average
-    if not clv_values:
-        return Decimal(0)
+    # Ensure it’s a Decimal
+    avg_dec = avg_raw if isinstance(avg_raw, Decimal) else Decimal(str(avg_raw))
 
-    # Calculate the sum of CLV values and the count of CLV entries
-    total_clv = sum([clv.clv_value for clv in clv_values])
-    average_clv = total_clv / len(clv_values)
+    # Quantize to exactly two places, rounding half-up
+    return avg_dec.quantize(Decimal("0.00"), rounding=ROUND_HALF_UP)
 
-    return average_clv
+
+
+    #
+    #
+    # # Query the CLV values for all customers related to the gym
+    # clv_values = db.query(models.CLV.clv_value).join(models.Customer).filter(models.Customer.gym_id == gym_id).all()
+    #
+    # # If there are no CLV records, return 0 as the average
+    # if not clv_values:
+    #     return Decimal(0)
+    #
+    # # Calculate the sum of CLV values and the count of CLV entries
+    # total_clv = sum([clv.clv_value for clv in clv_values])
+    # average_clv = total_clv / len(clv_values)
+    #
+    # return average_clv
 
 
 def get_customers_by_package(db: Session, gym_id: int):
@@ -146,3 +166,25 @@ def get_risk_customer_count_for_gym(db: Session, gym_id: int) -> int:
     ).count()
 
     return count
+
+
+
+
+def count_recent_customers(
+    db: Session,
+    gym_id: int,
+    recency_threshold: int = 7
+) -> int:
+    """
+    Return the number of customers belonging to `gym_id`
+    whose RFM.recency_score is less than recency_threshold.
+    """
+    return (
+        db.query(func.count(models.RFM.rfm_id))
+          .join(models.Customer, models.Customer.customer_id == models.RFM.customer_id)
+          .filter(
+              models.Customer.gym_id == gym_id,
+              models.RFM.recency_score < recency_threshold
+          )
+          .scalar()
+    )

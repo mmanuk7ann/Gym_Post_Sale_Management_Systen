@@ -1,10 +1,10 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from Database.database import get_db
-from crud import get_member_count, get_average_clv, get_customers_by_package, get_risk_customer_count_for_gym
+from crud import get_member_count, get_average_clv, get_customers_by_package, get_risk_customer_count_for_gym, count_recent_customers
 from Database.schemas import CountResponse
 from Database.schemas import AverageCLVResponse
 from Database.schemas import PackageCustomerSumListResponse, PackageCustomerSumResponse
@@ -67,12 +67,13 @@ def count_risk_customers(
 
 
 
-# @router.get("/gym/retention-rate", response_model=int)
-# def retention_rate(
-#         gym_id: int,
-#         db: Session = Depends(get_db),
-# ):
-#
-#     # TODO
-#     # implement retention rate calculation logic
-#     pass
+@router.get("/gym/last_week_visits", response_model=int)
+def last_week_visits(
+        gym_id: int,
+        db: Session = Depends(get_db),
+):
+    count = count_recent_customers(db, gym_id)
+    if count is None:
+        # just in case something went wrong
+        raise HTTPException(status_code=404, detail="Gym not found or no data")
+    return count
