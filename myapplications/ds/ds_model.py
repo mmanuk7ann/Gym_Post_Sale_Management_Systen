@@ -3,6 +3,9 @@ from pathlib import Path
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+import os
 
 
 current_dir = Path(__file__).parent
@@ -125,7 +128,7 @@ rfm_df = rfm[["customer_id", "Recency", "Frequency", "Monetary", "Segment"]].cop
 rfm_df = rfm_df.rename(columns={
     "Recency": "recency_score",
     "Frequency": "frequency_score",
-    "Monetary": "mointory_score",  # per your original spelling
+    "Monetary": "monetary_score",  
     "Segment": "customer_segment"
 })
 rfm_df.insert(0, "rfm_id", range(1, len(rfm_df) + 1))  # auto-increment ID
@@ -151,3 +154,37 @@ def calculate_retention_rate(rfm_df, churn_threshold=90):
 
 retention = calculate_retention_rate(rfm)
 print(f"Retention Rate: {retention:.2f}%")
+
+
+
+def save_dfs_to_postgres(clv_df: pd.DataFrame, rfm_df: pd.DataFrame):
+    """
+    Pushes clv_df and rfm_df to a PostgreSQL database 
+    """
+    # Load environment variables from the parent directory
+    env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+    load_dotenv(dotenv_path=env_path)
+
+    # Get the database connection URL
+    database_url = os.getenv('DATABASE_URL')
+    if not database_url:
+        raise ValueError("DATABASE_URL not found in .env file")
+
+    # Create database engine
+    engine = create_engine(database_url)
+
+    # Save dataframes to the database
+    try:
+        clv_df.to_sql('clv', con=engine, if_exists='replace', index=False)
+        print("clv_df inserted into 'clv' table.")
+    except Exception as e:
+        print(f"Error inserting clv_df: {e}")
+
+    try:
+        rfm_df.to_sql('rfm', con=engine, if_exists='replace', index=False)
+        print("rfm_df inserted into 'rfm' table.")
+    except Exception as e:
+        print(f"Error inserting rfm_df: {e}")
+
+
+save_dfs_to_postgres(clv_df, rfm_df)

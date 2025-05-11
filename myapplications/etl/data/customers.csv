@@ -1,4 +1,5 @@
 customer_id,gym_id,name,email,phone,birth_date,gender,join_date,status,package_id,trainer_id
+<<<<<<< Updated upstream
 1,1,Nicholas Rivera,shelley00@example.org,001-869-514-2833x14576,1984-03-14,Female,2023-12-16,active,1,7
 2,3,Jennifer Mcintyre,taylor92@example.net,933.542.9920x956,1980-04-27,Male,2023-09-27,active,2,8
 3,1,Edward Hampton,heather36@example.org,611-855-2806x08721,1969-09-26,Male,2025-03-01,active,5,10
@@ -19,3 +20,25 @@ customer_id,gym_id,name,email,phone,birth_date,gender,join_date,status,package_i
 18,2,Mitchell Mcguire,stephensangela@example.net,+1-445-464-3893x508,1979-09-27,Other,2024-09-27,inactive,4,9
 19,3,Jason Martin,tylermoore@example.org,001-233-370-0260x450,1994-07-25,Female,2024-04-13,active,5,1
 20,1,Steven Valentine,randydouglas@example.net,805-812-0634x869,2004-10-23,Other,2023-09-21,inactive,1,7
+=======
+1,1,Lauren Horton,imills@example.org,(363)655-8464,1984-05-15,Male,2023-06-18,inactive,4,9
+2,1,Joshua Morris,charlesharris@example.com,2474348921,1982-09-02,Female,2023-09-06,active,6,4
+3,1,Donald Webb,stokesamanda@example.com,+1-707-628-2306x4222,1982-04-10,Male,2024-06-04,active,4,6
+4,2,Christian Pruitt,hannahharris@example.org,001-596-544-5699x0233,1978-05-30,Male,2023-11-22,inactive,3,8
+5,2,Alex Sanchez,tiffanybaker@example.net,415.446.5976x6670,1989-06-21,Other,2024-06-06,active,6,7
+6,2,Bradley Lane,hurstrobert@example.org,926.219.9002x7019,2004-10-11,Female,2023-11-17,inactive,2,6
+7,2,Meagan Lynn,donald77@example.com,703-786-4357x25971,1965-11-22,Female,2024-11-29,inactive,4,9
+8,3,Valerie Martinez,vargasjessica@example.net,969.788.6344x9117,1976-08-17,Female,2025-04-25,active,3,2
+9,3,Christina Nash,kennethbriggs@example.org,7873666610,1969-03-09,Male,2023-06-28,active,1,1
+10,1,Marvin Sanchez,mguzman@example.com,(792)775-6236x69009,2003-06-04,Female,2023-11-30,inactive,3,4
+11,1,Trevor Patton,amcdonald@example.net,256.663.9868,1978-06-02,Other,2025-02-19,inactive,3,7
+12,3,Amber Hall,thomas87@example.net,679.230.3100,1967-09-04,Other,2023-12-18,inactive,2,10
+13,3,Leslie Richardson,haynesfrederick@example.org,(988)399-2230x47258,1988-08-22,Other,2024-10-23,inactive,6,4
+14,1,Krista Williams,turnerjoshua@example.net,(647)847-7831x29966,1996-02-18,Other,2025-03-11,active,5,8
+15,3,James Hall,angela77@example.org,+1-926-567-5685x3902,1972-11-05,Other,2025-03-28,inactive,6,4
+16,1,Shawn Vargas,michelle38@example.org,955.649.3877x969,1986-09-19,Male,2025-04-01,inactive,3,5
+17,1,Jose Smith,jcarey@example.com,(318)295-9332,1977-09-26,Male,2024-01-14,active,5,7
+18,1,Richard Arellano,howarddan@example.com,001-616-714-5783x337,2004-05-18,Female,2024-06-16,inactive,6,5
+19,2,Michael White Jr.,dbell@example.org,+1-278-476-6492x6447,1994-05-08,Male,2023-07-22,inactive,3,5
+20,2,Heather Myers,tbarnes@example.com,001-403-321-9604x8510,1995-08-09,Female,2025-02-01,inactive,1,7
+>>>>>>> Stashed changes
