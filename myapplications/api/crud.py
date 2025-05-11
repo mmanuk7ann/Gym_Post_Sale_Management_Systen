@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, cast, Date
 from sqlalchemy import select
 import Database.models as models
 import utils.security as sec
@@ -9,6 +9,9 @@ import utils.security as sec
 # --- Auth / Gym ---
 def get_gym_by_email(db: Session, email: str):
     return db.query(models.Gym).filter(models.Gym.email == email).first()
+
+def get_gyms_by_gym_id(db: Session, gym_id: int):
+    return db.query(models.Gym).filter(models.Gym.gym_id == gym_id).first()
 
 def create_gym(db: Session, gym_in):
     hashed = sec.hash_password(gym_in.password)
@@ -67,17 +70,32 @@ def get_average_clv(db: Session, gym_id: int) -> Decimal | float:
 
 
 def get_customers_by_package(db: Session, gym_id: int):
-    return db.query(
-        models.Package.name,
-        func.count(models.Customer.customer_id).label("total_customers")
-    ).join(
-        models.Customer, models.Customer.package_id == models.Package.package_id
-    ).filter(
-        models.Package.gym_id == gym_id
-    ).group_by(
-        models.Package.package_id
-    ).all()
-
+    """
+    Returns a list of (package_name, total_customers) tuples
+    for all packages (including those with zero customers)
+    belonging to the given gym.
+    """
+    return (
+        db.query(
+            models.Package.name.label("package_name"),
+            func.count(models.Customer.customer_id).label("total_customers"),
+        )
+        .outerjoin(
+            models.Customer,
+            models.Customer.package_id == models.Package.package_id
+        )
+        .filter(
+            models.Package.gym_id == gym_id
+        )
+        .group_by(
+            models.Package.package_id,
+            models.Package.name
+        )
+        .order_by(
+            models.Package.name
+        )
+        .all()
+    )
 
 def get_risk_customers_for_gym(db: Session, gym_id: int):
     """
