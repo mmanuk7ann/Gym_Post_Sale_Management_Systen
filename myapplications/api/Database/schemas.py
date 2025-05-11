@@ -85,6 +85,7 @@ class CustomerOut(BaseCustomer):
 
 class EmailSend(BaseModel):
     email: EmailStr
+    subject: str
     text: str
 
 

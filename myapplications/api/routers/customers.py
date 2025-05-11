@@ -4,7 +4,6 @@ from typing import List
 
 from Database.database import get_db
 
-# from dependencies import get_current_gym
 from crud import get_customers_for_gym, get_risk_customers_for_gym
 from Database.schemas import CustomerOut, RiskCustomerOut
 
@@ -14,10 +13,8 @@ router = APIRouter(prefix="/customers", tags=["customers"])
 def list_customers(
     gym_id: int,
     db: Session = Depends(get_db)
-    # gym = Depends(get_current_gym),
 ):
     rows = get_customers_for_gym(db, gym_id)
-    # rows are tuples → FastAPI will map them to CustomerOut
     return rows
 
 
@@ -26,7 +23,6 @@ def list_risk_customers(
         gym_id: int,
         db: Session = Depends(get_db),
 ):
-    # Retrieve at risk customers for the current gym
     rows = get_risk_customers_for_gym(db, gym_id)
     return rows
 

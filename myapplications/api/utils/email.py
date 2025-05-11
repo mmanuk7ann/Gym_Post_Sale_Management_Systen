@@ -1,26 +1,26 @@
-# from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
-# from core.config import settings
-#
-# # Define the configuration for the FastMail client
-# conf = ConnectionConfig(
-#     MAIL_USERNAME=settings.SMTP_USER,
-#     MAIL_PASSWORD=settings.SMTP_PASSWORD,
-#     MAIL_FROM=settings.EMAIL_FROM,
-#     MAIL_PORT=settings.SMTP_PORT,
-#     MAIL_SERVER=settings.SMTP_HOST,
-#     MAIL_TLS=settings.EMAIL_TLS,
-#     MAIL_SSL=False,  # Disable SSL since TLS is handled
-# )
-#
-# # Initialize FastMail instance
-# fast_mail = FastMail(conf)
-#
-# # Create async function for sending email
-# async def send_email(to: str, subject: str, text: str):
-#     message = MessageSchema(
-#         subject=subject,
-#         recipients=[to],  # List of recipients
-#         body=text,
-#         subtype="plain"  # Send as plain text
-#     )
-#     await fast_mail.send_message(message)
+# utils/emails.py
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+from core.config import settings
+
+class EmailClient:
+    def __init__(self):
+        self.server = settings.SMTP_SERVER
+        self.port = settings.SMTP_PORT
+        self.username = str(settings.SMTP_USERNAME)
+        self.password = settings.SMTP_PASSWORD
+
+    def send_email(self, to_email: str, subject: str, body: str) -> None:
+        """Compose and send a plain‐text email."""
+        msg = MIMEMultipart()
+        msg["From"] = self.username
+        msg["To"] = to_email
+        msg["Subject"] = subject
+        msg.attach(MIMEText(body, "plain"))
+
+        with smtplib.SMTP(self.server, self.port) as smtp:
+            smtp.starttls()
+            smtp.login(self.username, self.password)
+            smtp.sendmail(self.username, to_email, msg.as_string())

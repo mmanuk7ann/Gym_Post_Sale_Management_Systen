@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from Database.database import get_db
-# from dependencies import get_current_gym
 from crud import get_member_count, get_average_clv, get_customers_by_package, get_risk_customer_count_for_gym
 from Database.schemas import CountResponse
 from Database.schemas import AverageCLVResponse
