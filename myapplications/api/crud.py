@@ -1,6 +1,6 @@
 from decimal import Decimal, ROUND_HALF_UP
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func, cast, Date
 from sqlalchemy import select
 import Database.models as models
@@ -32,20 +32,26 @@ def get_member_count(db: Session, gym_id: int) -> int:
              .scalar()
 
 # --- Customers list ---
+# def get_customers_for_gym(db: Session, gym_id: int):
+#     return (
+#       db.query(
+#         models.Customer.name,
+#         models.Customer.email,
+#         models.Customer.phone,
+#         models.Package.name.label("membership"),
+#         models.Customer.gender
+#       )
+#       .join(models.Package, models.Customer.package_id == models.Package.package_id, isouter=True)
+#       .filter(models.Customer.gym_id == gym_id)
+#       .all()
+#     )
 def get_customers_for_gym(db: Session, gym_id: int):
     return (
-      db.query(
-        models.Customer.name,
-        models.Customer.email,
-        models.Customer.phone,
-        models.Package.name.label("membership"),
-        models.Customer.gender
-      )
-      .join(models.Package, models.Customer.package_id == models.Package.package_id, isouter=True)
-      .filter(models.Customer.gym_id == gym_id)
-      .all()
+        db.query(models.Customer)
+          .options(joinedload(models.Customer.package))
+          .filter(models.Customer.gym_id == gym_id)
+          .all()
     )
-
 
 def get_average_clv(db: Session, gym_id: int) -> Decimal | float:
     """

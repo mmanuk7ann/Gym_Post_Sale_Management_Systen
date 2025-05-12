@@ -77,9 +77,15 @@ class TokenData(BaseModel):
 
 # --- Customer Schemas ---
 
-class CustomerOut(BaseCustomer):
-    pass
+class CustomerOut(BaseModel):
+    name: str
+    email: EmailStr
+    phone: str
+    membership: Optional[str]
+    gender: str
 
+    class Config:
+        orm_mode = True
 
 # --- Email Schemas ---
 
