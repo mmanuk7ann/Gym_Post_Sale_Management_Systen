@@ -113,6 +113,7 @@ class PackageCustomerSumResponse(BaseModel):
 
 class RiskCustomerOut(BaseModel):
     name: str
+    email: EmailStr
     last_visit: date
     membership: str
     inactive_days: int

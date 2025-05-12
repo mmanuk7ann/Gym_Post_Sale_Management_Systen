@@ -124,7 +124,7 @@ def get_risk_customers_for_gym(db: Session, gym_id: int):
         models.Customer.email,
         models.Attendance.check_out.label('last_visit'),
         models.Customer.package_id,
-        func.datediff(func.current_date(), models.Attendance.check_out).label('inactive_days')
+        (func.current_date() - models.Attendance.check_out).label('inactive_days')
     ).join(
         models.RFM, models.RFM.customer_id == models.Customer.customer_id
     ).join(
@@ -134,10 +134,8 @@ def get_risk_customers_for_gym(db: Session, gym_id: int):
         models.Customer.gym_id == gym_id
     ).order_by(models.Attendance.check_out.desc()).all()
 
-    # Mapping to desired format (including the 'membership' package info)
     risk_customer_data = []
     for customer in risk_customers:
-        # Assuming you want to return the package's name (could be modified based on the 'Package' table structure)
         membership_name = "N/A"  # Default value if package_id is None
         if customer.package_id:
             membership_name = "Package ID: " + str(customer.package_id)  # Replace with actual package name if needed
@@ -146,11 +144,10 @@ def get_risk_customers_for_gym(db: Session, gym_id: int):
             "email": customer.email,
             "last_visit": customer.last_visit,
             "membership": membership_name,
-            "inactive_days": customer.inactive_days
+            "inactive_days": customer.inactive_days.days  # Accessing days of the interval
         })
 
     return risk_customer_data
-
 
 def get_risk_customer_count_for_gym(db: Session, gym_id: int) -> int:
     """
