@@ -1,7 +1,7 @@
 from decimal import Decimal, ROUND_HALF_UP
 
 from sqlalchemy.orm import Session, joinedload
-from sqlalchemy import func, cast, Date
+from sqlalchemy import func, cast, Date, Integer
 from sqlalchemy import select
 import Database.models as models
 import utils.security as sec
