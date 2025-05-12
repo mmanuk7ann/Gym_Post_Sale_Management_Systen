@@ -144,7 +144,7 @@ def get_risk_customers_for_gym(db: Session, gym_id: int):
             "email": customer.email,
             "last_visit": customer.last_visit,
             "membership": membership_name,
-            "inactive_days": customer.inactive_days.days  # Accessing days of the interval
+            "inactive_days": customer.inactive_days  # Accessing days of the interval
         })
 
     return risk_customer_data
