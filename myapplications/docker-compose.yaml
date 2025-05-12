@@ -74,7 +74,9 @@ services:
         condition: service_healthy
     healthcheck:
       test: "exit 0"
-
+    env_file:
+      - .env 
+      
   api:
     container_name: api
     build:
