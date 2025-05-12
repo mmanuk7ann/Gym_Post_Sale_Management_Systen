@@ -96,32 +96,21 @@ def get_average_clv(db: Session, gym_id: int) -> Decimal | float:
 
 
 def get_customers_by_package(db: Session, gym_id: int):
-    """
-    Returns a list of (package_name, total_customers) tuples
-    for all packages (including those with zero customers)
-    belonging to the given gym.
-    """
-    return (
+    results = (
         db.query(
             models.Package.name.label("package_name"),
-            func.count(models.Customer.customer_id).label("total_customers"),
+            func.count(models.Customer.customer_id).label("customer_count"),
         )
-        .outerjoin(
-            models.Customer,
-            models.Customer.package_id == models.Package.package_id
-        )
-        .filter(
-            models.Package.gym_id == gym_id
-        )
-        .group_by(
-            models.Package.package_id,
-            models.Package.name
-        )
-        .order_by(
-            models.Package.name
-        )
+        .outerjoin(models.Customer, models.Package.package_id == models.Customer.package_id)
+        .filter(models.Package.gym_id == gym_id)
+        .group_by(models.Package.name)
         .all()
     )
+
+    return [
+        {"package_name": row.package_name, "customer_count": row.customer_count}
+        for row in results
+    ]
 
 def get_risk_customers_for_gym(db: Session, gym_id: int):
     """
