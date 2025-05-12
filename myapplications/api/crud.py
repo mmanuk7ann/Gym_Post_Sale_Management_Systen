@@ -120,6 +120,7 @@ def get_risk_customers_for_gym(db: Session, gym_id: int):
     # Querying risk customers (those with the "At Risk" customer segment in the RFM table)
     risk_customers = db.query(
         models.Customer.name,
+        models.Customer.email,
         models.Attendance.check_out.label('last_visit'),
         models.Customer.package_id,
         func.datediff(func.current_date(), models.Attendance.check_out).label('inactive_days')
@@ -141,6 +142,7 @@ def get_risk_customers_for_gym(db: Session, gym_id: int):
             membership_name = "Package ID: " + str(customer.package_id)  # Replace with actual package name if needed
         risk_customer_data.append({
             "name": customer.name,
+            "email": customer.email,
             "last_visit": customer.last_visit,
             "membership": membership_name,
             "inactive_days": customer.inactive_days
