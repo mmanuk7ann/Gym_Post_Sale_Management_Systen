@@ -115,20 +115,23 @@ def get_customers_by_package(db: Session, gym_id: int):
 
 def get_risk_customers_for_gym(db: Session, gym_id: int):
     """
-    Returns customers marked as 'At Risk' along with their last visit date, membership package,
+    Returns customers marked as 'At Risk' along with their last visit date, membership package name,
     and inactive days based on the difference from the last visit.
     """
-    # Querying risk customers (those with the "At Risk" customer segment in the RFM table)
+
     risk_customers = db.query(
         models.Customer.name,
         models.Customer.email,
         models.Attendance.check_out.label('last_visit'),
-        models.Customer.package_id,
-        (func.current_date() - cast(models.Attendance.check_out, Date)).label('inactive_days')
+        models.Package.name.label('membership'),
+        cast(func.current_date() - cast(models.Attendance.check_out, Date), Integer).label('inactive_days')
     ).join(
         models.RFM, models.RFM.customer_id == models.Customer.customer_id
     ).join(
         models.Attendance, models.Attendance.customer_id == models.Customer.customer_id
+    ).join(
+        models.Package, models.Package.package_id == models.Customer.package_id,
+        isouter=True
     ).filter(
         models.RFM.customer_segment == 'At Risk',
         models.Customer.gym_id == gym_id
@@ -136,15 +139,13 @@ def get_risk_customers_for_gym(db: Session, gym_id: int):
 
     risk_customer_data = []
     for customer in risk_customers:
-        membership_name = "N/A"  # Default value if package_id is None
-        if customer.package_id:
-            membership_name = "Package ID: " + str(customer.package_id)  # Replace with actual package name if needed
+        membership_name = customer.membership if customer.membership else "N/A"
         risk_customer_data.append({
             "name": customer.name,
             "email": customer.email,
             "last_visit": customer.last_visit,
             "membership": membership_name,
-            "inactive_days": customer.inactive_days  # Accessing days of the interval
+            "inactive_days": customer.inactive_days
         })
 
     return risk_customer_data
