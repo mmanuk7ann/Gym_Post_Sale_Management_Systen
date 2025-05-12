@@ -103,6 +103,7 @@ def get_customers_by_package(db: Session, gym_id: int):
         )
         .outerjoin(models.Customer, models.Package.package_id == models.Customer.package_id)
         .filter(models.Package.gym_id == gym_id)
+        .filter(models.Customer.gym_id == gym_id)
         .group_by(models.Package.name)
         .all()
     )

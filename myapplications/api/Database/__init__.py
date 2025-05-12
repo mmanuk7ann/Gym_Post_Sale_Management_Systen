@@ -7,5 +7,5 @@ __all__ = (
     Base, Gym, Package, Customer, Transaction, Attendance, CLV, RFM,
     BaseGym, BasePackage, BaseCustomer, GymCreate, GymUpdate, GymOut, PackageCreate, PackageUpdate,
     PackageOut, Token, TokenData, CustomerOut, EmailSend, CountResponse, PackageCustomerSumResponse,
-    PackageCustomerSumListResponse, RiskCustomerOut,
+    RiskCustomerOut,
 )

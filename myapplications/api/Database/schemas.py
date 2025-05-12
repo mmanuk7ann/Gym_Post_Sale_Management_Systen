@@ -105,10 +105,10 @@ class AverageCLVResponse(BaseModel):
 
 class PackageCustomerSumResponse(BaseModel):
     package_name: str
-    total_customers: int
+    customer_count: int
 
-class PackageCustomerSumListResponse(BaseModel):
-    packages: List[PackageCustomerSumResponse]
+# class PackageCustomerSumListResponse(BaseModel):
+#     packages: List[PackageCustomerSumResponse]
 
 
 class RiskCustomerOut(BaseModel):
