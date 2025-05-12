@@ -124,7 +124,7 @@ def get_risk_customers_for_gym(db: Session, gym_id: int):
         models.Customer.email,
         models.Attendance.check_out.label('last_visit'),
         models.Customer.package_id,
-        (func.current_date() - models.Attendance.check_out).label('inactive_days')
+        (func.current_date() - cast(models.Attendance.check_out, Date)).label('inactive_days')
     ).join(
         models.RFM, models.RFM.customer_id == models.Customer.customer_id
     ).join(
