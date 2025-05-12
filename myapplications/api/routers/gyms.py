@@ -7,7 +7,7 @@ from Database.database import get_db
 from crud import get_member_count, get_average_clv, get_customers_by_package, get_risk_customer_count_for_gym, count_recent_customers
 from Database.schemas import CountResponse
 from Database.schemas import AverageCLVResponse
-from Database.schemas import PackageCustomerSumListResponse, PackageCustomerSumResponse
+from Database.schemas import PackageCustomerSumResponse
 
 router = APIRouter(prefix="/gyms", tags=["gyms"])
 
@@ -36,17 +36,14 @@ def average_clv(
     return AverageCLVResponse(average_clv=average_clv_value)
 
 
-@router.get("/gym/customers-by-package", response_model=PackageCustomerSumListResponse)
+@router.get("/gym/customers-by-package", response_model=list[PackageCustomerSumResponse])
 def customers_by_package(
         gym_id : int,
         db: Session = Depends(get_db),
 ):
     package_counts = get_customers_by_package(db, gym_id)
 
-    return PackageCustomerSumListResponse(
-        package_counts=package_counts,
-    )
-
+    return package_counts
 
 @router.get("/gym/risk-count", response_model=int)
 def count_risk_customers(
