@@ -41,19 +41,11 @@ def customers_by_package(
         gym_id : int,
         db: Session = Depends(get_db),
 ):
-    """
-    Get the sum of customers grouped by package for a specific gym.
-    """
-    results = get_customers_by_package(db, gym_id)
-    package_customer_sums = [
-        PackageCustomerSumResponse(
-            package_name=package_name,
-            total_customers=total_customers
-        )
-        for package_name, total_customers in results
-    ]
+    package_counts = get_customers_by_package(db, gym_id)
 
-    return PackageCustomerSumListResponse(packages=package_customer_sums)
+    return PackageCustomerSumListResponse(
+        package_counts=package_counts,
+    )
 
 
 @router.get("/gym/risk-count", response_model=int)
