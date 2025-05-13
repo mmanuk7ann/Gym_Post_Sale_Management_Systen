@@ -129,3 +129,5 @@ ehthumbs.db
 site/
 
 ./myapplications/postgres_data/
+
+./myapplications/pgadmin_data/
