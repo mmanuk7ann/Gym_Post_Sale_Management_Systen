@@ -47,6 +47,7 @@ def process_dataset(data_dir: Path):
     transactions['date'] = pd.to_datetime(transactions['date'])
     reference_date = attendance['check_out'].max()
 
+    # RFM Modeling 
     rfm = attendance.groupby('customer_id').agg({
         'check_out': lambda x: (reference_date - x.max()).days,
         'customer_id': 'count'
@@ -57,9 +58,11 @@ def process_dataset(data_dir: Path):
     rfm = rfm.merge(monetary, on='customer_id', how='left')
     rfm['Monetary'] = rfm['Monetary'].fillna(0)
 
+    # Scaling Data for KMeans
     scaler = StandardScaler()
     rfm_scaled = scaler.fit_transform(rfm[['Recency', 'Frequency', 'Monetary']])
 
+    # Applying KMeans
     kmeans = KMeans(n_clusters=4, random_state=42)
     rfm['Segment'] = kmeans.fit_predict(rfm_scaled)
 
@@ -72,7 +75,8 @@ def process_dataset(data_dir: Path):
     }
     rfm['Segment'] = rfm['Segment'].map(segment_mapping)
 
-    # AOV + CLV
+    # CLV Estimations
+    # # CLV is calculated based on this formula: CLV = Average Order Value × Purchase Frequency × Average Customer Lifespan
     transactions['order_count'] = 1
     aov = transactions.groupby('customer_id').agg({
         'amount': 'sum',
@@ -104,15 +108,11 @@ def process_dataset(data_dir: Path):
 
     # Push to PostgreSQL
     save_dfs_to_postgres(clv_df, rfm_df)
+    print("The model output is pushed to the Database.")
 
 
 # MAIN EXECUTION
 if __name__ == "__main__":
     current_dir = Path(__file__).parent
     parent_data_dir = current_dir.parent / 'etl' / 'data'
-
-    for folder in parent_data_dir.iterdir():
-        if folder.is_dir():
-            expected_files = ['attendance.csv', 'customers.csv', 'gyms.csv', 'packages.csv', 'transactions.csv']
-            if all((folder / f).exists() for f in expected_files):
-                process_dataset(folder)
+    process_dataset(parent_data_dir)
