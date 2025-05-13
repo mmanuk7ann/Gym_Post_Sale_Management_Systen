@@ -178,7 +178,6 @@ mkdocs gh-deploy --force
 
 ## 🔗 Links
 
-- 📚 MkDocs: http://localhost:8000/docs
 - 💻 Streamlit UI: http://localhost:8501
 - 🔐 Swagger UI: http://localhost:8000/docs
 - 🛢️ PgAdmin: http://localhost:5050
