@@ -12,47 +12,24 @@ Sends an email to a specified customer on behalf of the authenticated gym. The e
 **Authentication:** Internal — gym must be authenticated
 
 **Request Body (JSON):**
-
-```
+```json
 {
   "email": "customer@example.com",
   "text": "Your subscription has been updated."
 }
 ```
 
---- 
-
-## 🔐 POST `/auth/login` — Gym Login
-
-**Description:**
-Authenticates a gym using email and password credentials. Returns a JWT token that should be used for authenticated requests.
-
-**Authentication:** Public
-
-**Request Parameters (Form-encoded):**
-
-username (string) — Gym email
-password (string) — Gym password
-
-```
-{
-  "access_token": "<JWT_TOKEN>",
-  "token_type": "bearer"
-}
-```
-
 ---
 
-## 👥 GET `/customer/all` — List All Customers
+## 👥 GET `/customers/customer/all` — List All Customers
 
-**Description:**
+**Description:**  
 Retrieves a list of all customers associated with the currently authenticated gym.
 
 **Authentication:** Gym must be logged in (JWT token)
 
-Response:
-
-```
+**Response:**
+```json
 [
   {
     "customer_id": 1,
@@ -60,23 +37,21 @@ Response:
     "email": "john@example.com",
     "join_date": "2024-12-01",
     "status": "active"
-  },
-  ...
+  }
 ]
 ```
 
---- 
+---
 
 ## ⚠️ GET `/customers/customer/risk` — List At-Risk Customers
 
-**Description:**
+**Description:**  
 Returns a list of customers flagged as "at risk" of churning, based on internal logic such as infrequent attendance, nearing the end of subscription, or lack of engagement.
 
 **Authentication:** Gym must be logged in (JWT token)
 
-Response:
-
-```
+**Response:**
+```json
 [
   {
     "customer_id": 7,
@@ -84,8 +59,7 @@ Response:
     "email": "jane@example.com",
     "risk_status": "high",
     "last_attendance": "2025-04-01"
-  },
-  ...
+  }
 ]
 ```
 
@@ -93,14 +67,13 @@ Response:
 
 ## 📊 GET `/gyms/gym/members-count` — Get Total Member Count
 
-**Description:**
+**Description:**  
 Returns the total number of registered members (customers) currently associated with the authenticated gym. Useful for dashboards and analytics.
 
 **Authentication:** Gym must be logged in (JWT token)
 
-Response:
-
-```
+**Response:**
+```json
 {
   "count": 42
 }
@@ -108,7 +81,7 @@ Response:
 
 ---
 
-## 📈 GET `/gym/average-clv` — Get Average Customer Lifetime Value (CLV)
+## 📈 GET `/gyms/gym/average-clv` — Get Average Customer Lifetime Value (CLV)
 
 **Description:**  
 Returns the average Customer Lifetime Value (CLV) for all customers registered under the authenticated gym. Useful for understanding long-term customer value and guiding retention strategies.
@@ -116,7 +89,7 @@ Returns the average Customer Lifetime Value (CLV) for all customers registered u
 **Authentication:** Gym must be logged in (JWT token)
 
 **Response:**
-```
+```json
 {
   "average_clv": 2485.75
 }
@@ -124,7 +97,7 @@ Returns the average Customer Lifetime Value (CLV) for all customers registered u
 
 ---
 
-## 📦 GET `/gym/customers-by-package` — Customers Grouped by Package
+## 📦 GET `/gyms/gym/customers-by-package` — Customers Grouped by Package
 
 **Description:**  
 Returns the total number of customers grouped by the subscription package they are enrolled in, specific to the authenticated gym. Useful for visualizing package popularity and usage distribution.
@@ -132,7 +105,7 @@ Returns the total number of customers grouped by the subscription package they a
 **Authentication:** Gym must be logged in (JWT token)
 
 **Response:**
-```
+```json
 {
   "packages": [
     {
@@ -149,15 +122,59 @@ Returns the total number of customers grouped by the subscription package they a
 
 ---
 
-## 📉 GET `/gym/retention-rate` — Customer Retention Rate (Coming Soon)
+## 🧮 GET `/gyms/gym/risk-count` — Count Risk Customers
 
 **Description:**  
-**[Not yet implemented]**  
-This endpoint is intended to return the retention rate of customers for the authenticated gym — a key metric indicating how well the gym retains its members over time.
+Returns the total number of at-risk customers under the authenticated gym.
 
 **Authentication:** Gym must be logged in (JWT token)
 
-**Response (Planned):**
+**Response:**
+```json
+{
+  "risk_count": 8
+}
 ```
-75
+
+---
+
+## 📅 GET `/gyms/gym/last_week_visits` — Last Week Visits
+
+**Description:**  
+Returns the number of visits made by each customer in the last 7 days.
+
+**Authentication:** Gym must be logged in (JWT token)
+
+**Response:**
+```json
+[
+  {
+    "customer_id": 5,
+    "name": "Alex Johnson",
+    "visits": 3
+  },
+  {
+    "customer_id": 9,
+    "name": "Maria Lopez",
+    "visits": 1
+  }
+]
+```
+
+---
+
+# 🔧 System
+
+## 🩺 GET `/health` — Health Check
+
+**Description:**  
+Returns a simple status to indicate that the backend is running.
+
+**Authentication:** Public
+
+**Response:**
+```json
+{
+  "status": "ok"
+}
 ```
