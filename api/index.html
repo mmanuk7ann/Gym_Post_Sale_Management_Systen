@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>📘 API Endpoints Documentation - My Docs</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">My Docs</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">📄 Project Overview</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">📘 API Endpoints Documentation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../database/" class="nav-link">🗃️ Database Documentation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../frontend/" class="nav-link">🖥️ Frontend Interface</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../models/" class="nav-link">🤖 Modeling Service</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../database/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#api-endpoints-documentation" class="nav-link">📘 API Endpoints Documentation</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#post-emailsend-send-email-to-customer" class="nav-link">📧 POST /email/send — Send Email to Customer</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#get-customerscustomerall-list-all-customers" class="nav-link">👥 GET /customers/customer/all — List All Customers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#get-customerscustomerrisk-list-at-risk-customers" class="nav-link">⚠️ GET /customers/customer/risk — List At-Risk Customers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#get-gymsgymmembers-count-get-total-member-count" class="nav-link">📊 GET /gyms/gym/members-count — Get Total Member Count</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#get-gymsgymaverage-clv-get-average-customer-lifetime-value-clv" class="nav-link">📈 GET /gyms/gym/average-clv — Get Average Customer Lifetime Value (CLV)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#get-gymsgymcustomers-by-package-customers-grouped-by-package" class="nav-link">📦 GET /gyms/gym/customers-by-package — Customers Grouped by Package</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#get-gymsgymrisk-count-count-risk-customers" class="nav-link">🧮 GET /gyms/gym/risk-count — Count Risk Customers</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#get-gymsgymlast_week_visits-last-week-visits" class="nav-link">📅 GET /gyms/gym/last_week_visits — Last Week Visits</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-bs-level="1"><a href="#system" class="nav-link">🔧 System</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#get-health-health-check" class="nav-link">🩺 GET /health — Health Check</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="api-endpoints-documentation">📘 API Endpoints Documentation</h1>
+<p>This document describes key API endpoints for the MVP version of the application.</p>
+<hr />
+<h2 id="post-emailsend-send-email-to-customer">📧 POST <code>/email/send</code> — Send Email to Customer</h2>
+<p><strong>Description:</strong><br />
+Sends an email to a specified customer on behalf of the authenticated gym. The email is sent asynchronously as a background task, so the request returns immediately.</p>
+<p><strong>Authentication:</strong> Internal — gym must be authenticated</p>
+<p><strong>Request Body (JSON):</strong></p>
+<pre><code class="language-json">{
+  &quot;email&quot;: &quot;customer@example.com&quot;,
+  &quot;text&quot;: &quot;Your subscription has been updated.&quot;
+}
+</code></pre>
+<hr />
+<h2 id="get-customerscustomerall-list-all-customers">👥 GET <code>/customers/customer/all</code> — List All Customers</h2>
+<p><strong>Description:</strong><br />
+Retrieves a list of all customers associated with the currently authenticated gym.</p>
+<p><strong>Authentication:</strong> Gym must be logged in (JWT token)</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;customer_id&quot;: 1,
+    &quot;name&quot;: &quot;John Doe&quot;,
+    &quot;email&quot;: &quot;john@example.com&quot;,
+    &quot;join_date&quot;: &quot;2024-12-01&quot;,
+    &quot;status&quot;: &quot;active&quot;
+  }
+]
+</code></pre>
+<hr />
+<h2 id="get-customerscustomerrisk-list-at-risk-customers">⚠️ GET <code>/customers/customer/risk</code> — List At-Risk Customers</h2>
+<p><strong>Description:</strong><br />
+Returns a list of customers flagged as "at risk" of churning, based on internal logic such as infrequent attendance, nearing the end of subscription, or lack of engagement.</p>
+<p><strong>Authentication:</strong> Gym must be logged in (JWT token)</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;customer_id&quot;: 7,
+    &quot;name&quot;: &quot;Jane Smith&quot;,
+    &quot;email&quot;: &quot;jane@example.com&quot;,
+    &quot;risk_status&quot;: &quot;high&quot;,
+    &quot;last_attendance&quot;: &quot;2025-04-01&quot;
+  }
+]
+</code></pre>
+<hr />
+<h2 id="get-gymsgymmembers-count-get-total-member-count">📊 GET <code>/gyms/gym/members-count</code> — Get Total Member Count</h2>
+<p><strong>Description:</strong><br />
+Returns the total number of registered members (customers) currently associated with the authenticated gym. Useful for dashboards and analytics.</p>
+<p><strong>Authentication:</strong> Gym must be logged in (JWT token)</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;count&quot;: 42
+}
+</code></pre>
+<hr />
+<h2 id="get-gymsgymaverage-clv-get-average-customer-lifetime-value-clv">📈 GET <code>/gyms/gym/average-clv</code> — Get Average Customer Lifetime Value (CLV)</h2>
+<p><strong>Description:</strong><br />
+Returns the average Customer Lifetime Value (CLV) for all customers registered under the authenticated gym. Useful for understanding long-term customer value and guiding retention strategies.</p>
+<p><strong>Authentication:</strong> Gym must be logged in (JWT token)</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;average_clv&quot;: 2485.75
+}
+</code></pre>
+<hr />
+<h2 id="get-gymsgymcustomers-by-package-customers-grouped-by-package">📦 GET <code>/gyms/gym/customers-by-package</code> — Customers Grouped by Package</h2>
+<p><strong>Description:</strong><br />
+Returns the total number of customers grouped by the subscription package they are enrolled in, specific to the authenticated gym. Useful for visualizing package popularity and usage distribution.</p>
+<p><strong>Authentication:</strong> Gym must be logged in (JWT token)</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;packages&quot;: [
+    {
+      &quot;package_name&quot;: &quot;Plus Plan&quot;,
+      &quot;total_customers&quot;: 18
+    },
+    {
+      &quot;package_name&quot;: &quot;Basic Plan&quot;,
+      &quot;total_customers&quot;: 32
+    }
+  ]
+}
+</code></pre>
+<hr />
+<h2 id="get-gymsgymrisk-count-count-risk-customers">🧮 GET <code>/gyms/gym/risk-count</code> — Count Risk Customers</h2>
+<p><strong>Description:</strong><br />
+Returns the total number of at-risk customers under the authenticated gym.</p>
+<p><strong>Authentication:</strong> Gym must be logged in (JWT token)</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;risk_count&quot;: 8
+}
+</code></pre>
+<hr />
+<h2 id="get-gymsgymlast_week_visits-last-week-visits">📅 GET <code>/gyms/gym/last_week_visits</code> — Last Week Visits</h2>
+<p><strong>Description:</strong><br />
+Returns the number of visits made by each customer in the last 7 days.</p>
+<p><strong>Authentication:</strong> Gym must be logged in (JWT token)</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;customer_id&quot;: 5,
+    &quot;name&quot;: &quot;Alex Johnson&quot;,
+    &quot;visits&quot;: 3
+  },
+  {
+    &quot;customer_id&quot;: 9,
+    &quot;name&quot;: &quot;Maria Lopez&quot;,
+    &quot;visits&quot;: 1
+  }
+]
+</code></pre>
+<hr />
+<h1 id="system">🔧 System</h1>
+<h2 id="get-health-health-check">🩺 GET <code>/health</code> — Health Check</h2>
+<p><strong>Description:</strong><br />
+Returns a simple status to indicate that the backend is running.</p>
+<p><strong>Authentication:</strong> Public</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;ok&quot;
+}
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
